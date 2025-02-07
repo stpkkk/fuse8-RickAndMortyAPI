@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { CharacterGrid } from './components/CharacterGrid';
+import { CharacterCard } from './components/CharacterCard';
 
-type Character = {
+export type Character = {
   id: number;
   url: string;
   image: string;
@@ -15,38 +17,52 @@ function App() {
   useEffect(() => {
     fetch(`https://rickandmortyapi.com/api/character/?name=${query}`)
       .then((response) => response.json())
-      .then((data) => setCharacters(data.results))
+      .then((data) => setCharacters(data.results || []))
       .catch((error) => console.error('Error fetching data:', error));
   }, [query]);
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
-      <input
-        type="text"
-        placeholder="Search character..."
-        className="rounded border p-2"
-        autoFocus
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-        {characters.map((character) => (
-          <a
-            key={character.id}
-            href={character.url}
-            className="block rounded border p-4 hover:shadow-lg"
-          >
-            <img
-              src={character.image}
-              alt={character.name}
-              className="h-48 w-full rounded object-cover"
-            />
-            <h2 className="mt-2 text-xl font-bold">{character.name}</h2>
-            <p>{character.species}</p>
-          </a>
-        ))}
+    <main className="mx-auto flex w-full max-w-[1596px] flex-col items-center justify-center pt-[128px]">
+      <div className="flex w-full max-w-[626px] flex-col items-center justify-center">
+        <input
+          type="text"
+          placeholder="Search characters..."
+          className="h-[64px] w-full rounded border"
+          autoFocus
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <span className="mt-[13px] self-start pl-[39px]">
+          Found characters {characters.length}
+        </span>
       </div>
-    </div>
+
+      <div className="mt-[100px] flex w-full flex-col gap-4">
+        <CharacterGrid
+          characters={characters.slice(0, 2)}
+          columns={2}
+          renderItem={(character) => (
+            <CharacterCard
+              key={character.id}
+              character={character}
+              className="h-[262px] w-full max-w-[518px]"
+            />
+          )}
+        />
+
+        <CharacterGrid
+          characters={characters.slice(2, 8)}
+          columns={3}
+          renderItem={(character) => (
+            <CharacterCard
+              key={character.id}
+              character={character}
+              className="h-[150px] w-full max-w-[518px]"
+            />
+          )}
+        />
+      </div>
+    </main>
   );
 }
 
