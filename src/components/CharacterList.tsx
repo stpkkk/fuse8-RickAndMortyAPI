@@ -16,7 +16,7 @@ export function CharacterList({ characters }: CharacterListProps) {
           <CharacterCard
             key={character.id}
             character={character}
-            className="h-[200px] w-full max-w-[788px] sm:h-[262px]"
+            className="h-[200px] w-full max-w-[788px] sm:h-[262px] [&>h2]:text-[30px]"
           />
         )}
       />
@@ -28,7 +28,7 @@ export function CharacterList({ characters }: CharacterListProps) {
           <CharacterCard
             key={character.id}
             character={character}
-            className="h-[120px] w-full flex-0 sm:h-[150px] lg:max-w-[518px]"
+            className="h-[120px] w-full flex-0 sm:h-[150px] lg:max-w-[518px] [&>h2]:text-[25px]"
           />
         )}
       />

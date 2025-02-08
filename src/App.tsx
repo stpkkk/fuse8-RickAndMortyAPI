@@ -5,10 +5,10 @@ import { SearchInput } from './components/SearchInput';
 
 export type Character = {
   id: number;
-  url: string;
   image: string;
   name: string;
-  species: string;
+  status: 'Dead' | 'Alive' | 'unknown';
+  created: string;
 };
 
 function App() {
