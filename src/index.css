@@ -1,1 +1,24 @@
 @import 'tailwindcss';
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./fonts/Montserrat-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: url('./fonts/FiraSans-Regular.ttf');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: url('./fonts/FiraSans-Bold.ttf');
+  font-weight: 700;
+  font-display: swap;
+}
+
+body {
+  @apply font-[fira];
+}

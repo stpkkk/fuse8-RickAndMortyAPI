@@ -1,18 +1,22 @@
-import { JSX } from 'react';
-import { Character } from '../App';
+import type { JSX } from 'react';
+import type { Character } from '../App';
 
-export const CharacterGrid = ({
+type CharacterGridProps = {
+  characters: Character[];
+  columns: 2 | 3;
+  renderItem: (character: Character) => JSX.Element;
+};
+
+export function CharacterGrid({
   characters,
   columns,
   renderItem,
-}: {
-  characters: Character[];
-  columns: number;
-  renderItem: (character: Character) => JSX.Element;
-}) => {
+}: CharacterGridProps) {
   return (
-    <div className={`grid grid-cols-${columns} gap-4`}>
+    <div
+      className={`grid gap-4 ${columns === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}
+    >
       {characters.map(renderItem)}
     </div>
   );
-};
+}

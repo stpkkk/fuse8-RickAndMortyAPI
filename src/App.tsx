@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { CharacterGrid } from './components/CharacterGrid';
-import { CharacterCard } from './components/CharacterCard';
+import { Loader } from './components/Loader';
+import { CharacterList } from './components/CharacterList';
+import { SearchInput } from './components/SearchInput';
 
 export type Character = {
   id: number;
@@ -13,54 +14,36 @@ export type Character = {
 function App() {
   const [query, setQuery] = useState<string>('');
   const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/character/?name=${query}`)
-      .then((response) => response.json())
-      .then((data) => setCharacters(data.results || []))
-      .catch((error) => console.error('Error fetching data:', error));
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://rickandmortyapi.com/api/character/?name=${query}`,
+        );
+        const data = await response.json();
+        setCharacters(data.results || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [query]);
 
   return (
-    <main className="mx-auto flex w-full max-w-[1596px] flex-col items-center justify-center pt-[128px]">
-      <div className="flex w-full max-w-[626px] flex-col items-center justify-center">
-        <input
-          type="text"
-          placeholder="Search characters..."
-          className="h-[64px] w-full rounded border"
-          autoFocus
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+    <main className="px-4 pt-10 pb-4 lg:pt-[128px]">
+      <div className="mx-auto flex w-full max-w-[1596px] flex-col items-center justify-center">
+        <SearchInput
+          query={query}
+          setQuery={setQuery}
+          characters={characters}
         />
-        <span className="mt-[13px] self-start pl-[39px]">
-          Found characters {characters.length}
-        </span>
-      </div>
-
-      <div className="mt-[100px] flex w-full flex-col gap-4">
-        <CharacterGrid
-          characters={characters.slice(0, 2)}
-          columns={2}
-          renderItem={(character) => (
-            <CharacterCard
-              key={character.id}
-              character={character}
-              className="h-[262px] w-full max-w-[518px]"
-            />
-          )}
-        />
-
-        <CharacterGrid
-          characters={characters.slice(2, 8)}
-          columns={3}
-          renderItem={(character) => (
-            <CharacterCard
-              key={character.id}
-              character={character}
-              className="h-[150px] w-full max-w-[518px]"
-            />
-          )}
-        />
+        {loading ? <Loader /> : <CharacterList characters={characters} />}
       </div>
     </main>
   );
