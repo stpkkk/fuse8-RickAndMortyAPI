@@ -22,7 +22,7 @@ export function CharacterList({ characters }: CharacterListProps) {
       />
 
       <CharacterGrid
-        characters={characters.slice(2, 8)}
+        characters={characters.slice(2)}
         columns={3}
         renderItem={(character) => (
           <CharacterCard

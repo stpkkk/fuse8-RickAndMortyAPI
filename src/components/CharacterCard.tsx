@@ -13,16 +13,28 @@ function formatDate(dateString: string): string {
   return `${day}.${month}.${year}`;
 }
 
+function getStatusColor(status: string): string {
+  switch (status) {
+    case 'Dead':
+      return '#820a0a';
+    case 'Alive':
+      return '#267504';
+    default:
+      return 'text-primary';
+  }
+}
+
 export function CharacterCard({ character, className }: CharacterCardProps) {
-  const statusColor = character.status === 'Dead' ? '#820A0A' : '#267504';
+  const statusColor = getStatusColor(character.status);
   const formattedCreatedDate = formatDate(character.created);
 
   return (
-    <div
-      className={`${className} flex flex-col justify-between rounded-lg border-none pt-[20px] pr-[34px] pb-[21px] pl-[30px] shadow-[0_7px_25px_rgba(100,100,111,0.2)] transition-transform hover:scale-101`}
+    <a
+      className={`${className} shadow-primary flex flex-col justify-between rounded-lg border-none pt-[20px] pr-[34px] pb-[21px] pl-[30px] transition-transform hover:scale-103`}
+      href={character.url}
     >
       <h2>{character.name}</h2>
-      <div className="flex w-full items-center justify-between font-[montserrat] text-[14px] text-[#767676]">
+      <div className="text-secondary font-secondary flex w-full items-center justify-between text-[14px]">
         <p>
           Status:{' '}
           <span style={{ color: statusColor, fontWeight: 'bold' }}>
@@ -31,6 +43,6 @@ export function CharacterCard({ character, className }: CharacterCardProps) {
         </p>
         <p>Created: {formattedCreatedDate}</p>
       </div>
-    </div>
+    </a>
   );
 }
