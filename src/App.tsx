@@ -8,12 +8,14 @@ export type Character = {
   image: string;
   name: string;
   status: 'Dead' | 'Alive' | 'unknown';
+  species: string;
   created: string;
   url: string;
 };
 
 function App() {
   const [query, setQuery] = useState<string>('');
+  const [tempQuery, setTempQuery] = useState<string>('');
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +25,15 @@ function App() {
       searchInputRef.current.focus();
     }
   }, []);
+
+  //debounce
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setQuery(tempQuery);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [tempQuery]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,8 +63,8 @@ function App() {
     <main className="px-4 pt-10 pb-4 lg:py-[128px]">
       <div className="mx-auto flex w-full max-w-[1596px] flex-col items-center justify-center">
         <SearchInput
-          query={query}
-          setQuery={setQuery}
+          query={tempQuery}
+          setQuery={setTempQuery}
           characters={characters}
           ref={searchInputRef}
         />

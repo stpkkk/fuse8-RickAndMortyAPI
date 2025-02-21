@@ -33,7 +33,9 @@ export function CharacterCard({ character, className }: CharacterCardProps) {
       className={`${className} shadow-primary flex flex-col justify-between rounded-lg border-none pt-[20px] pr-[34px] pb-[21px] pl-[30px] transition-transform hover:scale-103`}
       href={character.url}
     >
-      <h2>{character.name}</h2>
+      <h2>
+        {character.name} - {character.species}
+      </h2>
       <div className="text-secondary font-secondary flex w-full items-center justify-between text-[14px]">
         <p>
           Status:{' '}
